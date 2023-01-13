@@ -1,4 +1,4 @@
-﻿namespace ShopAPI.Models
+﻿namespace ShopAPI.Models.Customer
 {
     public class Customer
     {
