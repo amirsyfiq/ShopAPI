@@ -1,7 +1,7 @@
 global using Microsoft.EntityFrameworkCore;
-global using ShopAPI.Models.Customer;
-global using ShopAPI.Models.Product;
-global using ShopAPI.Models.Cart;
+global using ShopAPI.Models.Customers;
+global using ShopAPI.Models.Products;
+global using ShopAPI.Models.Carts;
 global using ShopAPI.Data;
 global using System.Text.Json.Serialization;
 

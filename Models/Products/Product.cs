@@ -1,4 +1,4 @@
-﻿namespace ShopAPI.Models.Product
+﻿namespace ShopAPI.Models.Products
 {
     public class Product
     {
@@ -10,6 +10,9 @@
         // RELATION WITH TABLE CATEGORY
         public Category? Categories { get; set; }
         public int? CategoryId { get; set; }
+
+        // RELATION WITH TABLE CART
+        public List<Cart>? Carts { get; set; }
 
         // RELATION WITH TABLE PRODUCT IMAGE
         //public ProductImage ProductImages { get; set; }

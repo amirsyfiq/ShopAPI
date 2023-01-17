@@ -1,4 +1,4 @@
-﻿namespace ShopAPI.Models.Product
+﻿namespace ShopAPI.Models.Products
 {
     public class Category
     {

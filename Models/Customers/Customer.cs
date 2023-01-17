@@ -1,4 +1,4 @@
-﻿namespace ShopAPI.Models.Customer
+﻿namespace ShopAPI.Models.Customers
 {
     public class Customer
     {
@@ -8,6 +8,6 @@
         public string Password { get; set; } = string.Empty;
 
         // RELATION WITH TABLE CART
-        //public List<Cart> Carts { get; set; }
+        public List<Cart>? Carts { get; set; }
     }
 }

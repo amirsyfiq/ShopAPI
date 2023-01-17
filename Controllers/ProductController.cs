@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ShopAPI.Models.Product;
+using ShopAPI.Models.Products;
 using System.Collections.Generic;
 
 namespace ShopAPI.Controllers

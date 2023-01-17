@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopAPI.Models.Product
+namespace ShopAPI.Models.Products
 {
     public class AddProductRequest
     {

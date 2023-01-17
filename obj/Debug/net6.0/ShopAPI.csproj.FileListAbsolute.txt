@@ -5,6 +5,8 @@ C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\ShopAPI.deps.jso
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\ShopAPI.runtimeconfig.json
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\ShopAPI.dll
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\ShopAPI.pdb
+C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\AutoMapper.dll
+C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\Humanizer.dll
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\Microsoft.Data.SqlClient.dll
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.dll
@@ -63,5 +65,3 @@ C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\obj\Debug\net6.0\refint\ShopAPI.d
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\obj\Debug\net6.0\ShopAPI.pdb
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\obj\Debug\net6.0\ShopAPI.genruntimeconfig.cache
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\obj\Debug\net6.0\ref\ShopAPI.dll
-C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\AutoMapper.dll
-C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll

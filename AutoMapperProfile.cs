@@ -8,6 +8,7 @@ namespace ShopAPI
         {
             CreateMap<Category,CategoryDTO>();
             CreateMap<Product,ProductDTO>();
+            CreateMap<Cart, CartDTO>();
         }
     }
 }

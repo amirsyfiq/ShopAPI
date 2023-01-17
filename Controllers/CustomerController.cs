@@ -10,7 +10,7 @@ namespace ShopAPI.Controllers
         private readonly DataContext _context;
         public CustomerController(DataContext context)
         {
-            _context= context;
+            _context = context;
         }
 
         // USER REGISTER

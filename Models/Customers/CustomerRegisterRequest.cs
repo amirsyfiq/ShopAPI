@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopAPI.Models.Customer
+namespace ShopAPI.Models.Customers
 {
     public class CustomerRegisterRequest
     {
