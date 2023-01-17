@@ -34,7 +34,7 @@ namespace ShopAPI.Controllers
 
         // GET SPECIFIC PRODUCT BY ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetSingleProduct(int id)
+        public async Task<ActionResult<Product>> GetProduct(int id)
         {
             //var product = await _context.Products.FindAsync(id);
             var product = await _context.Products.Include(c => c.Categories).Where(p => p.Id == id).FirstOrDefaultAsync();
@@ -69,7 +69,7 @@ namespace ShopAPI.Controllers
 
         // GET LIST OF ALL CATEGORIES
         [HttpGet]
-        public async Task<ActionResult<List<Category>>> GetAllCategory()
+        public async Task<ActionResult<List<Category>>> GetCategoryList()
         {
             //var category = await _context.Categories.ToListAsync();
             var category = await _context.Categories.Include(c => c.Products).ToListAsync();
@@ -83,7 +83,7 @@ namespace ShopAPI.Controllers
 
         // GET LIST OF PRODUCTS FOR SPECIFIC CATEGORY
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetSingleCategory(int id)
+        public async Task<ActionResult<Product>> GetCategory(int id)
         {
             var product = await _context.Products.Where(p => p.CategoryId == id).ToListAsync();
             var productDTO = product.Select(p => _mapper.Map<ProductDTO>(p));
