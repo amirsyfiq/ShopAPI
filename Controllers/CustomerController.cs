@@ -13,6 +13,7 @@ namespace ShopAPI.Controllers
             _context= context;
         }
 
+        // USER REGISTER
         [HttpPost]
         public async Task<IActionResult> Register(CustomerRegisterRequest request)
         {
@@ -34,6 +35,7 @@ namespace ShopAPI.Controllers
             return Ok("User successfully created!");
         }
 
+        // USER LOGIN
         [HttpPost]
         public async Task<IActionResult> Login(CustomerLoginRequest request)
         {

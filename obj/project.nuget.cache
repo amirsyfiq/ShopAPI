@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "59oQB5ZO5EpLaNOwAYmJQaE80YvzRFgv1HDrMj7MzcEREWYvra48SdIRXvBJ+XJBzaWL5RZA35xW6giNAKlq4A==",
+  "dgSpecHash": "neMWB1VYoJBOl44wVefVomUtcUjO394QJ3GRKYRYzxi6Z7ixxbJvoMxqfQ9RPQcYzQaLIRMrgV0wIaZL2syH/Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\fmasm\\Downloads\\ASP .NET CORE\\ShopAPI\\ShopAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\fmasm\\.nuget\\packages\\automapper\\12.0.0\\automapper.12.0.0.nupkg.sha512",
+    "C:\\Users\\fmasm\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.0\\automapper.extensions.microsoft.dependencyinjection.12.0.0.nupkg.sha512",
     "C:\\Users\\fmasm\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
-    "C:\\Users\\fmasm\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\fmasm\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\fmasm\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\fmasm\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "C:\\Users\\fmasm\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.0\\microsoft.entityframeworkcore.6.0.0.nupkg.sha512",
