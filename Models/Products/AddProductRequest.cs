@@ -11,6 +11,8 @@ namespace ShopAPI.Models.Products
         [Required]
         public float Price { get; set; }
         [Required]
+        public string ImageURL { get; set; } = string.Empty;
+        [Required]
         public int categoryId { get; set; }
     }
 }

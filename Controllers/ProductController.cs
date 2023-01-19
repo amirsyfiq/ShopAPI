@@ -19,6 +19,7 @@ namespace ShopAPI.Controllers
             _mapper = mapper;
         }
 
+
         // GET LIST OF ALL PRODUCTS
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetAllProduct()
@@ -32,11 +33,11 @@ namespace ShopAPI.Controllers
             return Ok(productDTO);
         }
 
+
         // GET SPECIFIC PRODUCT BY ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<Product>> GetProduct(int id) // Product ID
         {
-            //var product = await _context.Products.FindAsync(id);
             var product = await _context.Products.Include(c => c.Categories).Where(p => p.Id == id).FirstOrDefaultAsync();
             var productDTO = _mapper.Map<ProductDTO>(product);
 
@@ -45,6 +46,7 @@ namespace ShopAPI.Controllers
 
             return Ok(productDTO);
         }
+
 
         // CREATE A NEW PRODUCTS
         [HttpPost]
@@ -57,21 +59,21 @@ namespace ShopAPI.Controllers
                 Name = request.Name,
                 Description = request.Description,
                 Price = request.Price,
+                ImageURL = request.ImageURL,
                 Categories = category
             };
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
-            //return Ok(await _context.Products.ToListAsync());
             return Ok("Product successfully added!");
         }
+
 
         // GET LIST OF ALL CATEGORIES
         [HttpGet]
         public async Task<ActionResult<List<Category>>> GetCategoryList()
         {
-            //var category = await _context.Categories.ToListAsync();
             var category = await _context.Categories.Include(c => c.Products).ToListAsync();
             var categoryDTO = category.Select(c => _mapper.Map<CategoryDTO>(c));
 
@@ -81,18 +83,20 @@ namespace ShopAPI.Controllers
             return Ok(categoryDTO);
         }
 
+
         // GET LIST OF PRODUCTS FOR SPECIFIC CATEGORY
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetCategory(int id)
+        public async Task<ActionResult<Product>> GetCategory(int id) // Category ID
         {
             var product = await _context.Products.Where(p => p.CategoryId == id).ToListAsync();
             var productDTO = product.Select(p => _mapper.Map<ProductDTO>(p));
 
             if (productDTO?.Any() != true)
-                return BadRequest("There is no product found on this categories!");
+                return BadRequest("There is no product found in this categories!");
 
             return Ok(productDTO);
         }
+
 
         // CREATE A NEW CATEGORY
         [HttpPost]
@@ -106,7 +110,6 @@ namespace ShopAPI.Controllers
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            //return Ok(await _context.Categories.ToListAsync());
             return Ok("Category successfully added!");
         }
     }

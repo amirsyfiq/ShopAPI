@@ -18,9 +18,10 @@ namespace ShopAPI.Controllers
             _mapper = mapper;
         }
 
+
         // GET LIST OF ITEMS IN THE CART FOR USER
         [HttpGet("{id}")]
-        public async Task<ActionResult<Cart>> GetAllItem(int id)
+        public async Task<ActionResult<Cart>> GetAllItem(int id) // User ID
         {
             var cart = await _context.Carts.Include(p => p.Products).Where(c => c.CustomerId == id).ToListAsync();
             var cartDTO = cart.Select(c => _mapper.Map<CartDTO>(c));
@@ -31,9 +32,10 @@ namespace ShopAPI.Controllers
             return Ok(cartDTO);
         }
 
+
         // ADD ITEM INTO THE CART
         [HttpPost]
-        public async Task<ActionResult<Cart>> AddItem(AddCartRequest request)
+        public async Task<ActionResult<Cart>> AddItem(AddCartRequest request) // User ID and Product ID as object
         {
             // Check if product already exist in the cart, just increase the quantity and update the total
             if (_context.Carts.Any(c => c.CustomerId == request.CustomerId && c.ProductId == request.ProductId))
@@ -65,9 +67,10 @@ namespace ShopAPI.Controllers
             }
         }
 
+
         // INCREASE QUANTITY OF SPECIFIC ITEM IN THE CART
         [HttpPut]
-        public async Task<ActionResult<List<Cart>>> IncreaseQuantity(int id)
+        public async Task<ActionResult<List<Cart>>> IncreaseQuantity(int id) // Cart ID
         {
             var cart = await _context.Carts.FindAsync(id);
             var product = await _context.Products.Where(p => p.Id == cart.ProductId).FirstOrDefaultAsync();
@@ -82,9 +85,10 @@ namespace ShopAPI.Controllers
             return Ok("Item quantity is updated!");
         }
 
+
         // DECREASE QUANTITY OF SPECIFIC ITEM IN THE CART
         [HttpPut]
-        public async Task<ActionResult<List<Cart>>> DecreaseQuantity(int id)
+        public async Task<ActionResult<List<Cart>>> DecreaseQuantity(int id) // Cart ID
         {
             var cart = await _context.Carts.FindAsync(id);
             var product = await _context.Products.Where(p => p.Id == cart.ProductId).FirstOrDefaultAsync();
@@ -109,9 +113,10 @@ namespace ShopAPI.Controllers
             }
         }
 
+
         // REMOVE SPECIFIC ITEM FROM THE CART
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<Cart>>> RemoveItem(int id)
+        public async Task<ActionResult<List<Cart>>> RemoveItem(int id) // Cart ID
         {
             var cart = await _context.Carts.FindAsync(id);
             if (cart == null)
@@ -123,12 +128,12 @@ namespace ShopAPI.Controllers
             return Ok("Item has been removed!");
         }
 
+
         // REMOVE ALL ITEMS FROM THE CART
         [HttpDelete("{id}")]
-        public async Task<ActionResult<List<Cart>>> RemoveAllItem(int id)
+        public async Task<ActionResult<List<Cart>>> RemoveAllItem(int id) // User ID
         {
             var cart = await _context.Carts.Include(p => p.Products).Where(c => c.CustomerId == id).ToListAsync();
-            //var cart = await _context.Carts.Where(c => c.CustomerId == id).ToListAsync();
             if (cart?.Any() != true)
                 return BadRequest("Cart is empty!");
 
