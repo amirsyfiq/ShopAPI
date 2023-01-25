@@ -30,6 +30,9 @@ namespace ShopAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int?>("CheckoutId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
@@ -44,11 +47,50 @@ namespace ShopAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CheckoutId");
+
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("ProductId");
 
                     b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("ShopAPI.Models.Checkouts.Checkout", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("Payment")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Checkouts");
                 });
 
             modelBuilder.Entity("ShopAPI.Models.Customers.Customer", b =>
@@ -127,6 +169,10 @@ namespace ShopAPI.Migrations
 
             modelBuilder.Entity("ShopAPI.Models.Carts.Cart", b =>
                 {
+                    b.HasOne("ShopAPI.Models.Checkouts.Checkout", "Checkouts")
+                        .WithMany("Carts")
+                        .HasForeignKey("CheckoutId");
+
                     b.HasOne("ShopAPI.Models.Customers.Customer", "Customers")
                         .WithMany("Carts")
                         .HasForeignKey("CustomerId");
@@ -135,9 +181,20 @@ namespace ShopAPI.Migrations
                         .WithMany("Carts")
                         .HasForeignKey("ProductId");
 
+                    b.Navigation("Checkouts");
+
                     b.Navigation("Customers");
 
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("ShopAPI.Models.Checkouts.Checkout", b =>
+                {
+                    b.HasOne("ShopAPI.Models.Customers.Customer", "Customers")
+                        .WithMany("Checkouts")
+                        .HasForeignKey("CustomerId");
+
+                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("ShopAPI.Models.Products.Product", b =>
@@ -149,9 +206,16 @@ namespace ShopAPI.Migrations
                     b.Navigation("Categories");
                 });
 
+            modelBuilder.Entity("ShopAPI.Models.Checkouts.Checkout", b =>
+                {
+                    b.Navigation("Carts");
+                });
+
             modelBuilder.Entity("ShopAPI.Models.Customers.Customer", b =>
                 {
                     b.Navigation("Carts");
+
+                    b.Navigation("Checkouts");
                 });
 
             modelBuilder.Entity("ShopAPI.Models.Products.Category", b =>

@@ -13,5 +13,9 @@
         // RELATION WITH TABLE PRODUCT
         public Product? Products { get; set; }
         public int? ProductId { get; set; }
+
+        // RELATION WITH TABLE CHECKOUT
+        public Checkout? Checkouts { get; set; }
+        public int? CheckoutId { get; set; }
     }
 }

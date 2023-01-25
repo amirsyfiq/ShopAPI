@@ -9,5 +9,8 @@
 
         // RELATION WITH TABLE CART
         public List<Cart>? Carts { get; set; }
+
+        // RELATION WITH TABLE CHECKOUT
+        public List<Checkout>? Checkouts { get; set; }
     }
 }
