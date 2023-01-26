@@ -49,9 +49,7 @@ namespace ShopAPI.Controllers
             }).ToListAsync();
 
             if (checkoutDTO.Count == 0)
-            {
-                return BadRequest("No CheckOut Found!");
-            }
+                return BadRequest("No checkout found!");
 
             return Ok(checkoutDTO);
         }
@@ -63,9 +61,7 @@ namespace ShopAPI.Controllers
         {
             var checkout = await _context.Checkouts.Where(c => c.Id == id).FirstOrDefaultAsync();
             if (checkout == null)
-            {
-                return BadRequest("No CheckOut Found!");
-            }
+                return BadRequest("No checkout found!");
 
             var cart = await _context.Carts.Include(p => p.Products).Where(c => c.CustomerId == checkout.CustomerId).Select(c => new CartDTO()
             {
@@ -94,9 +90,7 @@ namespace ShopAPI.Controllers
             }).FirstOrDefaultAsync();
 
             if (checkoutDTO == null)
-            {
-                return BadRequest("No CheckOut Found!");
-            }
+                return BadRequest("No checkout found!");
 
             return Ok(checkoutDTO);
         }

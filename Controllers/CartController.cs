@@ -38,10 +38,8 @@ namespace ShopAPI.Controllers
                 }
             }).ToListAsync();
 
-            if(cartDTO.Count == 0)
-            {
+            if (cartDTO.Count == 0)
                 return BadRequest("Cart is empty!");
-            }
 
             return Ok(cartDTO);
         }
@@ -104,11 +102,11 @@ namespace ShopAPI.Controllers
         public async Task<ActionResult<List<Cart>>> IncreaseQuantity(int id) // Cart ID
         {
             var cart = await _context.Carts.Where(c => c.Id == id && c.CheckoutId == null).FirstOrDefaultAsync();
-            if(cart == null)
+            if (cart == null)
                 return BadRequest("Item not found!");
 
             var product = await _context.Products.Where(p => p.Id == cart.ProductId).FirstOrDefaultAsync();
-            if(product == null)
+            if (product == null)
                 return BadRequest("Item not found!");
 
             cart.Quantity = cart.Quantity + 1;
@@ -124,15 +122,15 @@ namespace ShopAPI.Controllers
         public async Task<ActionResult<List<Cart>>> DecreaseQuantity(int id) // Cart ID
         {
             var cart = await _context.Carts.Where(c => c.Id == id && c.CheckoutId == null).FirstOrDefaultAsync();
-            if(cart == null)
+            if (cart == null)
                 return BadRequest("Item not found!");
 
             var product = await _context.Products.Where(p => p.Id == cart.ProductId).FirstOrDefaultAsync();
-            if(product == null)
+            if (product == null)
                 return BadRequest("Item not found!");
 
             // Check if remaining product quantity in the cart is only one, remove the product from the cart
-            if(cart.Quantity <= 1)
+            if (cart.Quantity <= 1)
             {
                 _context.Carts.Remove(cart);
                 await _context.SaveChangesAsync();
@@ -154,7 +152,7 @@ namespace ShopAPI.Controllers
         public async Task<ActionResult<List<Cart>>> RemoveItem(int id) // Cart ID
         {
             var cart = await _context.Carts.Where(c => c.Id == id && c.CheckoutId == null).FirstOrDefaultAsync();
-            if(cart == null)
+            if (cart == null)
                 return BadRequest("Item not found!");
 
             _context.Carts.Remove(cart);
@@ -169,7 +167,7 @@ namespace ShopAPI.Controllers
         public async Task<ActionResult<List<Cart>>> RemoveAllItem(int id) // User ID
         {
             var cart = await _context.Carts.Include(p => p.Products).Where(c => c.CustomerId == id && c.CheckoutId == null).ToListAsync();
-            if(cart?.Any() != true)
+            if (cart?.Any() != true)
                 return BadRequest("Cart is empty!");
 
             _context.Carts.RemoveRange(cart);

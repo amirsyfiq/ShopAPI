@@ -18,10 +18,8 @@ namespace ShopAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(CustomerRegisterRequest request)
         {
-            if(_context.Customers.Any(c => c.Email == request.Email))
-            {
+            if (_context.Customers.Any(c => c.Email == request.Email))
                 return BadRequest("User is already exist!");
-            }
 
             var customer = new Customer
             {
