@@ -9,7 +9,7 @@ namespace ShopAPI.Models.Products
         [Required]
         public string Description { get; set; } = string.Empty;
         [Required]
-        public float Price { get; set; }
+        public double Price { get; set; }
         [Required]
         public string ImageURL { get; set; } = string.Empty;
         [Required]

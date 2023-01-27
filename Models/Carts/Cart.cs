@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public int Quantity { get; set; }
-        public float Total { get; set; }
+        public double Total { get; set; }
 
         // RELATION WITH TABLE CUSTOMER
         public Customer? Customers { get; set; }
