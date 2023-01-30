@@ -1,10 +1,11 @@
 global using Microsoft.EntityFrameworkCore;
-global using ShopAPI.Models.Customers;
+global using ShopAPI.Models.Users;
 global using ShopAPI.Models.Products;
 global using ShopAPI.Models.Carts;
 global using ShopAPI.Models.Checkouts;
 global using ShopAPI.Data;
 global using System.Text.Json.Serialization;
+global using ShopAPI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,9 @@ builder.Services.AddDbContext<DataContext>(options =>
     // Configure SQL Server
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
+// Add Stripe Infrastructure
+builder.Services.AddStripeInfrastructure(builder.Configuration);
 
 var app = builder.Build();
 

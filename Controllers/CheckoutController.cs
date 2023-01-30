@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ShopAPI.Contracts;
 using ShopAPI.Models.Products;
+using ShopAPI.Models.Stripe;
 
 namespace ShopAPI.Controllers
 {
@@ -11,11 +13,13 @@ namespace ShopAPI.Controllers
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IStripeAppService _stripeService;
 
-        public CheckoutController(DataContext context, IMapper mapper)
+        public CheckoutController(DataContext context, IMapper mapper, IStripeAppService stripeService)
         {
             _context = context;
             _mapper = mapper;
+            _stripeService = stripeService;
         }
 
 
@@ -23,7 +27,7 @@ namespace ShopAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Checkout>> GetAllCheckout(int id) // User ID
         {
-            var checkoutDTO = await _context.Checkouts.Include(c => c.Carts).Where(c => c.CustomerId == id).Select(c => new CheckoutDTO()
+            var checkoutDTO = await _context.Checkouts.Include(c => c.Carts).Where(c => c.UserId == id).Select(c => new CheckoutDTO()
             {
                 Id = c.Id,
                 FirstName = c.FirstName,
@@ -31,7 +35,8 @@ namespace ShopAPI.Controllers
                 Email = c.Email,
                 Address = c.Address,
                 Payment = c.Payment,
-                Carts = _context.Carts.Include(p => p.Products).Where(d => d.CustomerId == id && d.CheckoutId == c.Id).Select(d => new CartDTO()
+                Paid= c.Paid,
+                Carts = _context.Carts.Include(p => p.Products).Where(d => d.UserId == id && d.CheckoutId == c.Id).Select(d => new CartDTO()
                 {
                     Id = d.Id,
                     Quantity = d.Quantity,
@@ -62,7 +67,7 @@ namespace ShopAPI.Controllers
             if (checkout == null)
                 return BadRequest("No checkout found!");
 
-            var cartDTO = await _context.Carts.Include(p => p.Products).Where(c => c.CustomerId == checkout.CustomerId && c.CheckoutId == id).Select(c => new CartDTO()
+            var cartDTO = await _context.Carts.Include(p => p.Products).Where(c => c.UserId == checkout.UserId && c.CheckoutId == id).Select(c => new CartDTO()
             {
                 Id = c.Id,
                 Quantity = c.Quantity,
@@ -85,6 +90,7 @@ namespace ShopAPI.Controllers
                 Email = c.Email,
                 Address = c.Address,
                 Payment = c.Payment,
+                Paid= c.Paid,
                 Carts = cartDTO
             }).FirstOrDefaultAsync();
 
@@ -95,11 +101,40 @@ namespace ShopAPI.Controllers
         }
 
 
+        // ADD DETAILS OF THE CUSTOMER/PAYERS FOR PAYMENT
+        [HttpPost]
+        public async Task<ActionResult<StripeCustomer>> AddStripeCustomer([FromBody] AddStripeCustomer customer, CancellationToken ct)
+        {
+            StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
+            return StatusCode(StatusCodes.Status200OK, createdCustomer);
+        }
+
+
+        // PROCEED TO MAKE THE PAYMENT
+        [HttpPost]
+        public async Task<ActionResult<StripePayment>> AddStripePayment([FromBody] AddStripePayment payment, CancellationToken ct, int checkoutId) // CheckoutId
+        {
+            var checkout = await _context.Checkouts.Where(c => c.Id == checkoutId).FirstOrDefaultAsync();
+            long totalAmount = Convert.ToInt64(checkout.Payment * 100);
+
+            payment.Amount = totalAmount;
+
+            StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(payment, ct);
+            if (createdPayment == null)
+                return BadRequest("Payment unsuccessful");
+
+            checkout.Paid = true;
+            await _context.SaveChangesAsync();
+
+            return StatusCode(StatusCodes.Status200OK, createdPayment);
+        }
+
+
         // PROCEED TO CHECKOUT ALL ITEMS IN THE CART
         [HttpPost]
         public async Task<ActionResult<Checkout>> AddCheckout(AddCheckoutRequest request) // Checkout details with CustomerId
         {
-            var cart = await _context.Carts.Where(c => c.CustomerId == request.CustomerId && c.CheckoutId == null).ToListAsync();
+            var cart = await _context.Carts.Where(c => c.UserId == request.UserId && c.CheckoutId == null).ToListAsync();
             if (cart.Count == 0)
                 return BadRequest("No item found in the cart to checkout!");
 
@@ -117,7 +152,8 @@ namespace ShopAPI.Controllers
                 Email = request.Email,
                 Address = request.Address,
                 Payment = totalPayment,
-                CustomerId= request.CustomerId
+                Paid = false,
+                UserId = request.UserId
             };
 
             _context.Checkouts.Add(newcheckout);

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopAPI.Models.Customers
+namespace ShopAPI.Models.Users
 {
-    public class CustomerLoginRequest
+    public class UserLoginRequest
     {
         [Required, EmailAddress]
         public string Email { get; set; } = string.Empty;

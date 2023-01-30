@@ -14,6 +14,6 @@ namespace ShopAPI.Models.Checkouts
         [Required]
         public string Address { get; set; } = string.Empty;
         [Required]
-        public int? CustomerId { get; set; }
+        public int? UserId { get; set; }
     }
 }

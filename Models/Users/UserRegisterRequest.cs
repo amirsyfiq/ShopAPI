@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShopAPI.Models.Customers
+namespace ShopAPI.Models.Users
 {
-    public class CustomerRegisterRequest
+    public class UserRegisterRequest
     {
         [Required]
         public string Name { get; set; } = string.Empty;

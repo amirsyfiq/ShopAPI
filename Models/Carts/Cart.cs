@@ -7,8 +7,8 @@
         public double Total { get; set; }
 
         // RELATION WITH TABLE CUSTOMER
-        public Customer? Customers { get; set; }
-        public int? CustomerId { get; set; }
+        public User? Users { get; set; }
+        public int? UserId { get; set; }
 
         // RELATION WITH TABLE PRODUCT
         public Product? Products { get; set; }

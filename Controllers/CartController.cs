@@ -23,7 +23,7 @@ namespace ShopAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Cart>> GetAllItem(int id) // User ID
         {
-            var cartDTO = await _context.Carts.Include(p => p.Products).Where(c => c.CustomerId == id && c.CheckoutId == null).Select(c => new CartDTO()
+            var cartDTO = await _context.Carts.Include(p => p.Products).Where(c => c.UserId == id && c.CheckoutId == null).Select(c => new CartDTO()
             {
                 Id = c.Id,
                 Quantity = c.Quantity,
@@ -50,9 +50,9 @@ namespace ShopAPI.Controllers
         public async Task<ActionResult<Cart>> AddItem(AddCartRequest request) // User ID and Product ID as object
         {
             // Check if product already exist in the cart, just increase the quantity and update the total
-            if (_context.Carts.Any(c => c.CustomerId == request.CustomerId && c.ProductId == request.ProductId))
+            if (_context.Carts.Any(c => c.UserId == request.UserId && c.ProductId == request.ProductId))
             {
-                var cart = await _context.Carts.Where(c => c.CustomerId == request.CustomerId && c.ProductId == request.ProductId && c.CheckoutId == null).FirstOrDefaultAsync();
+                var cart = await _context.Carts.Where(c => c.UserId == request.UserId && c.ProductId == request.ProductId && c.CheckoutId == null).FirstOrDefaultAsync();
                 var product = await _context.Products.Where(p => p.Id == request.ProductId).FirstOrDefaultAsync();
 
                 if(cart == null)
@@ -61,7 +61,7 @@ namespace ShopAPI.Controllers
                     {
                         Quantity = 1,
                         Total = product.Price,
-                        CustomerId = request.CustomerId,
+                        UserId = request.UserId,
                         Products = product
                     };
 
@@ -86,7 +86,7 @@ namespace ShopAPI.Controllers
                 {
                     Quantity = 1,
                     Total = product.Price,
-                    CustomerId = request.CustomerId,
+                    UserId = request.UserId,
                     Products = product
                 };
 
@@ -166,7 +166,7 @@ namespace ShopAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<List<Cart>>> RemoveAllItem(int id) // User ID
         {
-            var cart = await _context.Carts.Include(p => p.Products).Where(c => c.CustomerId == id && c.CheckoutId == null).ToListAsync();
+            var cart = await _context.Carts.Include(p => p.Products).Where(c => c.UserId == id && c.CheckoutId == null).ToListAsync();
             if (cart?.Any() != true)
                 return BadRequest("Cart is empty!");
 

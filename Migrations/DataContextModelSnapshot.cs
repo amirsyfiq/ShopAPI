@@ -33,9 +33,6 @@ namespace ShopAPI.Migrations
                     b.Property<int?>("CheckoutId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
@@ -45,13 +42,16 @@ namespace ShopAPI.Migrations
                     b.Property<double>("Total")
                         .HasColumnType("float");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CheckoutId");
 
-                    b.HasIndex("CustomerId");
-
                     b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Carts");
                 });
@@ -68,9 +68,6 @@ namespace ShopAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -83,39 +80,20 @@ namespace ShopAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
+
                     b.Property<double>("Payment")
                         .HasColumnType("float");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Checkouts");
-                });
-
-            modelBuilder.Entity("ShopAPI.Models.Customers.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Customers");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Checkouts");
                 });
 
             modelBuilder.Entity("ShopAPI.Models.Products.Category", b =>
@@ -167,34 +145,59 @@ namespace ShopAPI.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("ShopAPI.Models.Users.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("ShopAPI.Models.Carts.Cart", b =>
                 {
                     b.HasOne("ShopAPI.Models.Checkouts.Checkout", "Checkouts")
                         .WithMany("Carts")
                         .HasForeignKey("CheckoutId");
 
-                    b.HasOne("ShopAPI.Models.Customers.Customer", "Customers")
-                        .WithMany("Carts")
-                        .HasForeignKey("CustomerId");
-
                     b.HasOne("ShopAPI.Models.Products.Product", "Products")
                         .WithMany("Carts")
                         .HasForeignKey("ProductId");
 
+                    b.HasOne("ShopAPI.Models.Users.User", "Users")
+                        .WithMany("Carts")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Checkouts");
 
-                    b.Navigation("Customers");
-
                     b.Navigation("Products");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("ShopAPI.Models.Checkouts.Checkout", b =>
                 {
-                    b.HasOne("ShopAPI.Models.Customers.Customer", "Customers")
+                    b.HasOne("ShopAPI.Models.Users.User", "Users")
                         .WithMany("Checkouts")
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Customers");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("ShopAPI.Models.Products.Product", b =>
@@ -211,13 +214,6 @@ namespace ShopAPI.Migrations
                     b.Navigation("Carts");
                 });
 
-            modelBuilder.Entity("ShopAPI.Models.Customers.Customer", b =>
-                {
-                    b.Navigation("Carts");
-
-                    b.Navigation("Checkouts");
-                });
-
             modelBuilder.Entity("ShopAPI.Models.Products.Category", b =>
                 {
                     b.Navigation("Products");
@@ -226,6 +222,13 @@ namespace ShopAPI.Migrations
             modelBuilder.Entity("ShopAPI.Models.Products.Product", b =>
                 {
                     b.Navigation("Carts");
+                });
+
+            modelBuilder.Entity("ShopAPI.Models.Users.User", b =>
+                {
+                    b.Navigation("Carts");
+
+                    b.Navigation("Checkouts");
                 });
 #pragma warning restore 612, 618
         }

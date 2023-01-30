@@ -1,6 +1,6 @@
-﻿namespace ShopAPI.Models.Customers
+﻿namespace ShopAPI.Models.Users
 {
-    public class Customer
+    public class User
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
