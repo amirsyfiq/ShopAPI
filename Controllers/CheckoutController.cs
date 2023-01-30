@@ -30,8 +30,7 @@ namespace ShopAPI.Controllers
             var checkoutDTO = await _context.Checkouts.Include(c => c.Carts).Where(c => c.UserId == id).Select(c => new CheckoutDTO()
             {
                 Id = c.Id,
-                FirstName = c.FirstName,
-                LastName = c.LastName,
+                Name = c.Name,
                 Email = c.Email,
                 Address = c.Address,
                 Payment = c.Payment,
@@ -85,8 +84,7 @@ namespace ShopAPI.Controllers
             var checkoutDTO = await _context.Checkouts.Include(c => c.Carts).Where(c => c.Id == id).Select(c => new CheckoutDTO()
             {
                 Id = c.Id,
-                FirstName = c.FirstName,
-                LastName = c.LastName,
+                Name = c.Name,
                 Email = c.Email,
                 Address = c.Address,
                 Payment = c.Payment,
@@ -103,8 +101,15 @@ namespace ShopAPI.Controllers
 
         // ADD DETAILS OF THE CUSTOMER/PAYERS FOR PAYMENT
         [HttpPost]
-        public async Task<ActionResult<StripeCustomer>> AddStripeCustomer([FromBody] AddStripeCustomer customer, CancellationToken ct)
+        public async Task<ActionResult<StripeCustomer>> AddStripeCustomer([FromBody] AddStripeCustomer customer, CancellationToken ct, int checkoutId) // CheckoutId
         {
+            var checkout = await _context.Checkouts.Where(c => c.Id == checkoutId).FirstOrDefaultAsync();
+            if (checkout == null)
+                return BadRequest("Checkout details not found!");
+
+            customer.Name = checkout.Name;
+            customer.Email = checkout.Email;
+
             StripeCustomer createdCustomer = await _stripeService.AddStripeCustomerAsync(customer, ct);
             return StatusCode(StatusCodes.Status200OK, createdCustomer);
         }
@@ -115,9 +120,12 @@ namespace ShopAPI.Controllers
         public async Task<ActionResult<StripePayment>> AddStripePayment([FromBody] AddStripePayment payment, CancellationToken ct, int checkoutId) // CheckoutId
         {
             var checkout = await _context.Checkouts.Where(c => c.Id == checkoutId).FirstOrDefaultAsync();
-            long totalAmount = Convert.ToInt64(checkout.Payment * 100);
+            if (checkout == null)
+                return BadRequest("Checkout details not found!");
 
+            long totalAmount = Convert.ToInt64(checkout.Payment * 100);
             payment.Amount = totalAmount;
+            payment.ReceiptEmail = checkout.Email;
 
             StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(payment, ct);
             if (createdPayment == null)
@@ -147,8 +155,7 @@ namespace ShopAPI.Controllers
 
             var newcheckout = new Checkout
             {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
+                Name = request.Name,
                 Email = request.Email,
                 Address = request.Address,
                 Payment = totalPayment,

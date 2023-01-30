@@ -18,7 +18,7 @@ namespace ShopAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(UserRegisterRequest request)
         {
-            if (_context.Users.Any(c => c.Email == request.Email))
+            if (_context.Users.Any(u => u.Email == request.Email))
                 return BadRequest("User is already exist!");
 
             var user = new User
@@ -39,7 +39,7 @@ namespace ShopAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserLoginRequest request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(c => c.Email == request.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user == null)
                 return BadRequest("User not found!");
 

@@ -12,8 +12,8 @@ using ShopAPI.Data;
 namespace ShopAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230130042252_renamecustomertouser")]
-    partial class renamecustomertouser
+    [Migration("20230130145409_CreateShopAPIDatabase")]
+    partial class CreateShopAPIDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -74,13 +74,12 @@ namespace ShopAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Paid")
+                        .HasColumnType("bit");
 
                     b.Property<double>("Payment")
                         .HasColumnType("float");
