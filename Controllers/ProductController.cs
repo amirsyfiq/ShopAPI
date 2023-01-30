@@ -27,7 +27,7 @@ namespace ShopAPI.Controllers
             var product = await _context.Products.Include(p => p.Categories).ToListAsync();
             var productDTO = product.Select(p => _mapper.Map<ProductDTO>(p));
 
-            if (productDTO == null)
+            if (productDTO.Count() == 0)
                 return BadRequest("There is no product at all!");
 
             return Ok(productDTO);
