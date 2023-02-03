@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Release\net6.0\publish\</_PublishTargetUrl>
-    <History>True|2023-01-25T01:03:17.2687514Z;</History>
+    <History>True|2023-02-03T03:29:54.6561530Z;True|2023-01-25T09:03:17.2687514+08:00;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

@@ -60,8 +60,8 @@ namespace ShopAPI.Controllers
 
             string token = CreateToken(user);
 
-            return Ok($"Welcome back {user.Name}!");
-            //return Ok(token);
+            //return Ok($"Welcome back {user.Name}!");
+            return Ok(token);
         }
 
 
@@ -90,9 +90,13 @@ namespace ShopAPI.Controllers
         // CREATE & APPLY JSON WEB TOKEN (JWT)
         private string CreateToken(User user)
         {
+            string refId = user.Id.ToString();
+
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Email)
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("UserId", refId),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));
