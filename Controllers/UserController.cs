@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -62,6 +63,16 @@ namespace ShopAPI.Controllers
 
             //return Ok($"Welcome back {user.Name}!");
             return Ok(token);
+            //return user.Id;
+        }
+
+
+        // GET DETAILS OF CURRENT USER
+        [HttpGet, Authorize]
+        public ActionResult<string> GetUser()
+        {
+            var userId = User.FindFirstValue("UserId");
+            return userId;
         }
 
 

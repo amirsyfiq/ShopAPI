@@ -67,3 +67,9 @@ C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\runtimes\unix\li
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\Microsoft.DotNet.PlatformAbstractions.dll
+C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\Scrutor.dll
+C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\Users\fmasm\Downloads\ASP .NET CORE\ShopAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
