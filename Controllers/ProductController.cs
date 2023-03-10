@@ -13,10 +13,13 @@ namespace ShopAPI.Controllers
     {
         private readonly DataContext _context;
         private readonly IMapper _mapper;
-        public ProductController(DataContext context, IMapper mapper)
+        private readonly IProductService _productService;
+
+        public ProductController(DataContext context, IMapper mapper, IProductService productService)
         {
             _context = context;
             _mapper = mapper;
+            _productService = productService;
         }
 
 
@@ -24,13 +27,15 @@ namespace ShopAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetAllProduct()
         {
-            var product = await _context.Products.Include(p => p.Categories).ToListAsync();
-            var productDTO = product.Select(p => _mapper.Map<ProductDTO>(p));
-
-            if (productDTO.Count() == 0)
-                return BadRequest("There is no product at all!");
-
-            return Ok(productDTO);
+            try
+            {
+                var result = await _productService.GetAllProduct();
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
 
@@ -38,13 +43,15 @@ namespace ShopAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id) // Product ID
         {
-            var product = await _context.Products.Include(c => c.Categories).Where(p => p.Id == id).FirstOrDefaultAsync();
-            var productDTO = _mapper.Map<ProductDTO>(product);
-
-            if (productDTO == null)
-                return BadRequest("Product is not found!");
-
-            return Ok(productDTO);
+            try
+            {
+                var result = await _productService.GetProduct(id);
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
 
@@ -52,21 +59,15 @@ namespace ShopAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<List<Product>>> AddProduct(AddProductRequest request)
         {
-            var category = await _context.Categories.Where(c => c.Id == request.categoryId).FirstOrDefaultAsync();
-
-            var product = new Product
+            try
             {
-                Name = request.Name,
-                Description = request.Description,
-                Price = request.Price,
-                ImageURL = request.ImageURL,
-                Categories = category
-            };
-
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-
-            return Ok("Product successfully added!");
+                var result = await _productService.AddProduct(request);
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest("Failed to add New Product!");
+            }
         }
 
 
@@ -74,13 +75,15 @@ namespace ShopAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Category>>> GetCategoryList()
         {
-            var category = await _context.Categories.Include(c => c.Products).ToListAsync();
-            var categoryDTO = category.Select(c => _mapper.Map<CategoryDTO>(c));
-
-            if (categoryDTO == null)
-                return BadRequest("There is no category at all!");
-
-            return Ok(categoryDTO);
+            try
+            {
+                var result = await _productService.GetCategoryList();
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
 
@@ -88,29 +91,31 @@ namespace ShopAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetCategory(int id) // Category ID
         {
-            var product = await _context.Products.Where(p => p.CategoryId == id).ToListAsync();
-            var productDTO = product.Select(p => _mapper.Map<ProductDTO>(p));
-
-            if (productDTO?.Any() != true)
-                return BadRequest("There is no product found in this categories!");
-
-            return Ok(productDTO);
+            try
+            {
+                var result = await _productService.GetCategory(id);
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
 
         // CREATE A NEW CATEGORY
         [HttpPost]
-        public async Task<ActionResult<List<Category>>> AddCategory(AddCategoryRequest request)
+        public async Task<ActionResult<string>> AddCategory(AddCategoryRequest request)
         {
-            var category = new Category
+            try
             {
-                Name = request.Name
-            };
-
-            _context.Categories.Add(category);
-            await _context.SaveChangesAsync();
-
-            return Ok("Category successfully added!");
+                var result = await _productService.AddCategory(request);
+                return Ok(result);
+            }
+            catch
+            {
+                return BadRequest("Failed to add New Category!");
+            }
         }
     }
 }
