@@ -13,6 +13,7 @@ global using Swashbuckle.AspNetCore.Filters;
 global using System.Text;
 global using ShopAPI.Services.Users;
 global using ShopAPI.Services.Products;
+global using ShopAPI.Services.Carts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 // Add services for Dependency Injection
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddHttpContextAccessor();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -11,14 +11,10 @@ namespace ShopAPI.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly DataContext _context;
-        private readonly IMapper _mapper;
         private readonly IProductService _productService;
 
-        public ProductController(DataContext context, IMapper mapper, IProductService productService)
+        public ProductController(IProductService productService)
         {
-            _context = context;
-            _mapper = mapper;
             _productService = productService;
         }
 
