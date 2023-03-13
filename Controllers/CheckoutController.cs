@@ -6,6 +6,7 @@ using ShopAPI.Models.Products;
 using ShopAPI.Models.Stripe;
 using ShopAPI.Services.Checkouts;
 using Stripe;
+using System.Web.Http.Results;
 
 namespace ShopAPI.Controllers
 {
@@ -32,7 +33,7 @@ namespace ShopAPI.Controllers
             }
             catch (ArgumentException e)
             {
-                return BadRequest(e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
         }
 
@@ -48,7 +49,7 @@ namespace ShopAPI.Controllers
             }
             catch (ArgumentException e)
             {
-                return BadRequest(e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
         }
 
@@ -96,7 +97,7 @@ namespace ShopAPI.Controllers
             }
             catch (ArgumentException e)
             {
-                return BadRequest(e.Message);
+                return StatusCode(StatusCodes.Status404NotFound, e.Message);
             }
         }
     }
