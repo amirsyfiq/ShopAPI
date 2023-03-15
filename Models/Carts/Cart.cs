@@ -8,7 +8,7 @@
 
         // RELATION WITH TABLE CUSTOMER
         public User? Users { get; set; }
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
 
         // RELATION WITH TABLE PRODUCT
         public Product? Products { get; set; }

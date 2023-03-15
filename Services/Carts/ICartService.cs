@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ShopAPI.Models.Users;
 
 namespace ShopAPI.Services.Carts
 {
     public interface ICartService
     {
-        Task<List<CartDTO>> GetAllItem(int id);
-        Task<string> AddItem(AddCartRequest request);
-        Task<string> IncreaseQuantity(int id);
-        Task<string> DecreaseQuantity(int id);
-        Task<string> RemoveItem(int id);
-        Task<string> RemoveAllItem(int id);
+        Task<List<CartDTO>> GetAllItem(int userId);
+        Task<string> AddItem(int userId, int productId);
+        Task<string> IncreaseQuantity(int cartId);
+        Task<string> DecreaseQuantity(int cartId);
+        Task<string> RemoveItem(int cartId);
+        Task<string> RemoveAllItem(int userId);
     }
 }

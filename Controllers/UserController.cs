@@ -57,7 +57,7 @@ namespace ShopAPI.Controllers
         [HttpGet, Authorize]
         public ActionResult<string> GetUser()
         {
-            var result = User.FindFirstValue("UserId");
+            var result = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //var result = _userService.GetUser();
             return Ok(result);
         }

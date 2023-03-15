@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopAPI.Models.Products;
+using System.Security.Claims;
 
 namespace ShopAPI.Controllers
 {
@@ -18,12 +20,13 @@ namespace ShopAPI.Controllers
 
 
         // GET LIST OF ALL ITEMS IN THE CART FOR USER
-        [HttpGet("{id}")]
-        public async Task<ActionResult<List<Cart>>> GetAllItem(int id) // User ID
+        [HttpGet, Authorize]
+        public async Task<ActionResult<List<Cart>>> GetAllItem()
         {
             try
             {
-                var result = await _cartService.GetAllItem(id);
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var result = await _cartService.GetAllItem(userId);
                 return Ok(result);
             }
             catch (ArgumentException e)
@@ -34,12 +37,13 @@ namespace ShopAPI.Controllers
 
 
         // ADD ITEM INTO THE CART
-        [HttpPost]
-        public async Task<ActionResult<Cart>> AddItem(AddCartRequest request) // User ID and Product ID as object
+        [HttpPost, Authorize]
+        public async Task<ActionResult<Cart>> AddItem(int productId) // Product ID
         {
             try
             {
-                var result = await _cartService.AddItem(request);
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var result = await _cartService.AddItem(userId, productId);
                 return Ok(result);
             }
             catch
@@ -50,12 +54,12 @@ namespace ShopAPI.Controllers
 
 
         // INCREASE QUANTITY OF SPECIFIC ITEM IN THE CART
-        [HttpPut]
-        public async Task<ActionResult<Cart>> IncreaseQuantity(int id) // Cart ID
+        [HttpPut, Authorize]
+        public async Task<ActionResult<Cart>> IncreaseQuantity(int cartId) // Cart ID
         {
             try
             {
-                var result = await _cartService.IncreaseQuantity(id);
+                var result = await _cartService.IncreaseQuantity(cartId);
                 return Ok(result);
             }
             catch (ArgumentException e)
@@ -66,12 +70,12 @@ namespace ShopAPI.Controllers
 
 
         // DECREASE QUANTITY OF SPECIFIC ITEM IN THE CART
-        [HttpPut]
-        public async Task<ActionResult<Cart>> DecreaseQuantity(int id) // Cart ID
+        [HttpPut, Authorize]
+        public async Task<ActionResult<Cart>> DecreaseQuantity(int cartId) // Cart ID
         {
             try
             {
-                var result = await _cartService.DecreaseQuantity(id);
+                var result = await _cartService.DecreaseQuantity(cartId);
                 return Ok(result);
             }
             catch (ArgumentException e)
@@ -82,12 +86,12 @@ namespace ShopAPI.Controllers
 
 
         // REMOVE SPECIFIC ITEM FROM THE CART
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Cart>> RemoveItem(int id) // Cart ID
+        [HttpDelete, Authorize]
+        public async Task<ActionResult<Cart>> RemoveItem(int cartId) // Cart ID
         {
             try
             {
-                var result = await _cartService.RemoveItem(id);
+                var result = await _cartService.RemoveItem(cartId);
                 return Ok(result);
             }
             catch (ArgumentException e)
@@ -98,12 +102,13 @@ namespace ShopAPI.Controllers
 
 
         // REMOVE ALL ITEMS FROM THE CART
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Cart>> RemoveAllItem(int id) // User ID
+        [HttpDelete, Authorize]
+        public async Task<ActionResult<Cart>> RemoveAllItem()
         {
             try
             {
-                var result = await _cartService.RemoveAllItem(id);
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var result = await _cartService.RemoveAllItem(userId);
                 return Ok(result);
             }
             catch (ArgumentException e)

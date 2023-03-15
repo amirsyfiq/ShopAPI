@@ -47,6 +47,7 @@ namespace ShopAPI.Services.Users
 
             var user = new User
             {
+                //Id = Guid.NewGuid().ToString(),
                 Name = request.Name,
                 Email = request.Email,
                 PasswordHash = passwordHash,
@@ -100,13 +101,14 @@ namespace ShopAPI.Services.Users
         // CREATE & APPLY JSON WEB TOKEN (JWT)
         private string CreateToken(User user)
         {
-            string refId = user.Id.ToString();
+            //string refId = user.Id.ToString();
 
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim("UserId", refId),
+                //new Claim("UserId", refId),
+                new Claim(ClaimTypes.NameIdentifier, (user.Id).ToString(), ClaimValueTypes.String),
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_configuration.GetSection("AppSettings:Token").Value));

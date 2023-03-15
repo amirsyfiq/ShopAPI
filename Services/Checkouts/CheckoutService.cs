@@ -20,9 +20,9 @@ namespace ShopAPI.Services.Checkouts
 
 
         // GET LIST OF ALL CHECKOUTS FOR USER SERVICE
-        public async Task<List<CheckoutDTO>> GetAllCheckout(int id) // User ID
+        public async Task<List<CheckoutDTO>> GetAllCheckout(int userId) // User ID
         {
-            var checkoutDTO = await _context.Checkouts.Include(c => c.Carts).Where(c => c.UserId == id).Select(c => new CheckoutDTO()
+            var checkoutDTO = await _context.Checkouts.Include(c => c.Carts).Where(c => c.UserId == userId).Select(c => new CheckoutDTO()
             {
                 Id = c.Id,
                 Name = c.Name,
@@ -30,7 +30,7 @@ namespace ShopAPI.Services.Checkouts
                 Address = c.Address,
                 Payment = c.Payment,
                 Paid = c.Paid,
-                Carts = _context.Carts.Include(p => p.Products).Where(d => d.UserId == id && d.CheckoutId == c.Id).Select(d => new CartDTO()
+                Carts = _context.Carts.Include(p => p.Products).Where(d => d.UserId == userId && d.CheckoutId == c.Id).Select(d => new CartDTO()
                 {
                     Id = d.Id,
                     Quantity = d.Quantity,
@@ -134,9 +134,9 @@ namespace ShopAPI.Services.Checkouts
 
 
         // PROCEED TO CHECKOUT ALL ITEMS IN THE CART SERVICE
-        public async Task<string> AddCheckout(AddCheckoutRequest request) // Checkout details with CustomerId
+        public async Task<string> AddCheckout(int userId, AddCheckoutRequest request) // Checkout details with CustomerId
         {
-            var cart = await _context.Carts.Where(c => c.UserId == request.UserId && c.CheckoutId == null).ToListAsync();
+            var cart = await _context.Carts.Where(c => c.UserId == userId && c.CheckoutId == null).ToListAsync();
             if (cart.Count == 0)
                 throw new ArgumentException("No item found in the cart to checkout!");
 
@@ -154,7 +154,7 @@ namespace ShopAPI.Services.Checkouts
                 Address = request.Address,
                 Payment = totalPayment,
                 Paid = false,
-                UserId = request.UserId
+                UserId = userId
             };
 
             _context.Checkouts.Add(newcheckout);

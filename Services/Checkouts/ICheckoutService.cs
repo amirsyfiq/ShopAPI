@@ -5,10 +5,10 @@ namespace ShopAPI.Services.Checkouts
 {
     public interface ICheckoutService
     {
-        Task<List<CheckoutDTO>> GetAllCheckout(int id);
+        Task<List<CheckoutDTO>> GetAllCheckout(int userId);
         Task<CheckoutDTO> GetCheckout(int id);
         Task<StripeCustomer> AddStripeCustomer([FromBody] AddStripeCustomer customer, CancellationToken ct, int checkoutId);
         Task<StripePayment> AddStripePayment([FromBody] AddStripePayment payment, CancellationToken ct, int checkoutId);
-        Task<string> AddCheckout(AddCheckoutRequest request);
+        Task<string> AddCheckout(int userId, AddCheckoutRequest request);
     }
 }

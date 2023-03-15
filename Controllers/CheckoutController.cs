@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShopAPI.Contracts;
@@ -6,6 +7,7 @@ using ShopAPI.Models.Products;
 using ShopAPI.Models.Stripe;
 using ShopAPI.Services.Checkouts;
 using Stripe;
+using System.Security.Claims;
 using System.Web.Http.Results;
 
 namespace ShopAPI.Controllers
@@ -23,12 +25,13 @@ namespace ShopAPI.Controllers
 
 
         // GET LIST OF ALL CHECKOUTS FOR USER
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Checkout>> GetAllCheckout(int id) // User ID
+        [HttpGet, Authorize]
+        public async Task<ActionResult<Checkout>> GetAllCheckout()
         {
             try
             {
-                var result = await _checkoutService.GetAllCheckout(id);
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var result = await _checkoutService.GetAllCheckout(userId);
                 return Ok(result);
             }
             catch (ArgumentException e)
@@ -39,12 +42,12 @@ namespace ShopAPI.Controllers
 
 
         // GET SPECIFIC CHECKOUT BY ID
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Checkout>> GetCheckout(int id) // Checkout ID
+        [HttpGet, Authorize]
+        public async Task<ActionResult<Checkout>> GetCheckout(int checkoutId) // Checkout ID
         {
             try
             {
-                var result = await _checkoutService.GetCheckout(id);
+                var result = await _checkoutService.GetCheckout(checkoutId);
                 return Ok(result);
             }
             catch (ArgumentException e)
@@ -55,7 +58,7 @@ namespace ShopAPI.Controllers
 
 
         // ADD DETAILS OF THE CUSTOMER/PAYERS FOR PAYMENT
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<ActionResult<StripeCustomer>> AddStripeCustomer([FromBody] AddStripeCustomer customer, CancellationToken ct, int checkoutId) // CheckoutId
         {
             try
@@ -71,7 +74,7 @@ namespace ShopAPI.Controllers
 
 
         // PROCEED TO MAKE THE PAYMENT
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<ActionResult<StripePayment>> AddStripePayment([FromBody] AddStripePayment payment, CancellationToken ct, int checkoutId) // CheckoutId
         {
             try
@@ -87,12 +90,13 @@ namespace ShopAPI.Controllers
 
 
         // PROCEED TO CHECKOUT ALL ITEMS IN THE CART
-        [HttpPost]
+        [HttpPost, Authorize]
         public async Task<ActionResult<Checkout>> AddCheckout(AddCheckoutRequest request) // Checkout details with CustomerId
         {
             try
             {
-                var result = await _checkoutService.AddCheckout(request);
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+                var result = await _checkoutService.AddCheckout(userId, request);
                 return Ok(result);
             }
             catch (ArgumentException e)

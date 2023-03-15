@@ -16,9 +16,9 @@ namespace ShopAPI.Services.Carts
 
 
         // GET LIST OF ALL ITEMS IN THE CART FOR USER SERVICE
-        public async Task<List<CartDTO>> GetAllItem(int id) // User ID
+        public async Task<List<CartDTO>> GetAllItem(int userId) // User ID
         {
-            var cartDTO = await _context.Carts.Include(p => p.Products).Where(c => c.UserId == id && c.CheckoutId == null).Select(c => new CartDTO()
+            var cartDTO = await _context.Carts.Include(p => p.Products).Where(c => c.UserId == userId && c.CheckoutId == null).Select(c => new CartDTO()
             {
                 Id = c.Id,
                 Quantity = c.Quantity,
@@ -41,13 +41,13 @@ namespace ShopAPI.Services.Carts
 
 
         // ADD ITEM INTO THE CART SERVICE
-        public async Task<string> AddItem(AddCartRequest request) // User ID and Product ID as object
+        public async Task<string> AddItem(int userId, int productId) // User ID and Product ID
         {
             // Check if product already exist in the cart, just increase the quantity and update the total
-            if (_context.Carts.Any(c => c.UserId == request.UserId && c.ProductId == request.ProductId))
+            if (_context.Carts.Any(c => c.UserId == userId && c.ProductId == productId))
             {
-                var cart = await _context.Carts.Where(c => c.UserId == request.UserId && c.ProductId == request.ProductId && c.CheckoutId == null).FirstOrDefaultAsync();
-                var product = await _context.Products.Where(p => p.Id == request.ProductId).FirstOrDefaultAsync();
+                var cart = await _context.Carts.Where(c => c.UserId == userId && c.ProductId == productId && c.CheckoutId == null).FirstOrDefaultAsync();
+                var product = await _context.Products.Where(p => p.Id == productId).FirstOrDefaultAsync();
 
                 if (cart == null)
                 {
@@ -55,7 +55,7 @@ namespace ShopAPI.Services.Carts
                     {
                         Quantity = 1,
                         Total = product.Price,
-                        UserId = request.UserId,
+                        UserId = userId,
                         Products = product
                     };
 
@@ -74,13 +74,13 @@ namespace ShopAPI.Services.Carts
             }
             else
             {
-                var product = await _context.Products.Where(p => p.Id == request.ProductId).FirstOrDefaultAsync();
+                var product = await _context.Products.Where(p => p.Id == productId).FirstOrDefaultAsync();
 
                 var newcart = new Cart
                 {
                     Quantity = 1,
                     Total = product.Price,
-                    UserId = request.UserId,
+                    UserId = userId,
                     Products = product
                 };
 
@@ -92,9 +92,9 @@ namespace ShopAPI.Services.Carts
 
 
         // INCREASE QUANTITY OF SPECIFIC ITEM IN THE CART SERVICE
-        public async Task<string> IncreaseQuantity(int id) // Cart ID
+        public async Task<string> IncreaseQuantity(int cartId) // Cart ID
         {
-            var cart = await _context.Carts.Where(c => c.Id == id && c.CheckoutId == null).FirstOrDefaultAsync();
+            var cart = await _context.Carts.Where(c => c.Id == cartId && c.CheckoutId == null).FirstOrDefaultAsync();
             if (cart == null)
                 throw new ArgumentException("Item not found!");
 
@@ -111,9 +111,9 @@ namespace ShopAPI.Services.Carts
 
 
         // DECREASE QUANTITY OF SPECIFIC ITEM IN THE CART SERVICE
-        public async Task<string> DecreaseQuantity(int id) // Cart ID
+        public async Task<string> DecreaseQuantity(int cartId) // Cart ID
         {
-            var cart = await _context.Carts.Where(c => c.Id == id && c.CheckoutId == null).FirstOrDefaultAsync();
+            var cart = await _context.Carts.Where(c => c.Id == cartId && c.CheckoutId == null).FirstOrDefaultAsync();
             if (cart == null)
                 throw new ArgumentException("Item not found!");
 
@@ -140,9 +140,9 @@ namespace ShopAPI.Services.Carts
 
 
         // REMOVE SPECIFIC ITEM FROM THE CART SERVICE
-        public async Task<string> RemoveItem(int id) // Cart ID
+        public async Task<string> RemoveItem(int cartId) // Cart ID
         {
-            var cart = await _context.Carts.Where(c => c.Id == id && c.CheckoutId == null).FirstOrDefaultAsync();
+            var cart = await _context.Carts.Where(c => c.Id == cartId && c.CheckoutId == null).FirstOrDefaultAsync();
             if (cart == null)
                 throw new ArgumentException("Item not found!");
 
@@ -154,9 +154,9 @@ namespace ShopAPI.Services.Carts
 
 
         // REMOVE ALL ITEMS FROM THE CART SERVICE
-        public async Task<string> RemoveAllItem(int id) // User ID
+        public async Task<string> RemoveAllItem(int userId) // User ID
         {
-            var cart = await _context.Carts.Include(p => p.Products).Where(c => c.UserId == id && c.CheckoutId == null).ToListAsync();
+            var cart = await _context.Carts.Include(p => p.Products).Where(c => c.UserId == userId && c.CheckoutId == null).ToListAsync();
             if (cart?.Any() != true)
                throw new ArgumentException("Cart is empty!");
 

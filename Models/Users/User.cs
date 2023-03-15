@@ -1,4 +1,7 @@
-﻿namespace ShopAPI.Models.Users
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace ShopAPI.Models.Users
 {
     public class User
     {

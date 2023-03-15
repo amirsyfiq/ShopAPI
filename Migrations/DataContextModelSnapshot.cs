@@ -42,7 +42,7 @@ namespace ShopAPI.Migrations
                     b.Property<double>("Total")
                         .HasColumnType("float");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -82,7 +82,7 @@ namespace ShopAPI.Migrations
                     b.Property<double>("Payment")
                         .HasColumnType("float");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -158,9 +158,11 @@ namespace ShopAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
@@ -180,7 +182,9 @@ namespace ShopAPI.Migrations
 
                     b.HasOne("ShopAPI.Models.Users.User", "Users")
                         .WithMany("Carts")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Checkouts");
 
@@ -193,7 +197,9 @@ namespace ShopAPI.Migrations
                 {
                     b.HasOne("ShopAPI.Models.Users.User", "Users")
                         .WithMany("Checkouts")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Users");
                 });
