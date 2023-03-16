@@ -26,7 +26,7 @@ namespace ShopAPI.Controllers
 
         // GET LIST OF ALL CHECKOUTS FOR USER
         [HttpGet, Authorize]
-        public async Task<ActionResult<Checkout>> GetAllCheckout()
+        public async Task<ActionResult<List<Checkout>>> GetAllCheckout()
         {
             try
             {
@@ -42,12 +42,12 @@ namespace ShopAPI.Controllers
 
 
         // GET SPECIFIC CHECKOUT BY ID
-        [HttpGet, Authorize]
-        public async Task<ActionResult<Checkout>> GetCheckout(int checkoutId) // Checkout ID
+        [HttpGet("{id}"), Authorize]
+        public async Task<ActionResult<Checkout>> GetCheckout(int id) // Checkout ID
         {
             try
             {
-                var result = await _checkoutService.GetCheckout(checkoutId);
+                var result = await _checkoutService.GetCheckout(id);
                 return Ok(result);
             }
             catch (ArgumentException e)

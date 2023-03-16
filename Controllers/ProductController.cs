@@ -37,11 +37,11 @@ namespace ShopAPI.Controllers
 
         // GET SPECIFIC PRODUCT BY ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int productId) // Product ID
+        public async Task<ActionResult<Product>> GetProduct(int id) // Product ID
         {
             try
             {
-                var result = await _productService.GetProduct(productId);
+                var result = await _productService.GetProduct(id);
                 return Ok(result);
             }
             catch (ArgumentException e)
@@ -85,11 +85,11 @@ namespace ShopAPI.Controllers
 
         // GET LIST OF PRODUCTS FOR SPECIFIC CATEGORY
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetCategory(int categoryId) // Category ID
+        public async Task<ActionResult<List<Product>>> GetCategory(int id) // Category ID
         {
             try
             {
-                var result = await _productService.GetCategory(categoryId);
+                var result = await _productService.GetCategory(id);
                 return Ok(result);
             }
             catch (ArgumentException e)
